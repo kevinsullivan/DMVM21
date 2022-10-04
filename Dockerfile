@@ -36,5 +36,18 @@ RUN . ~/.profile
 # Install Lean
 RUN wget -q https://raw.githubusercontent.com/leanprover-community/mathlib-tools/master/scripts/install_debian.sh && bash install_debian.sh ; rm -f install_debian.sh && source ~/.profile
 
-# Dafny prerequisites: none; VSCode extension installs it for us
+# C++
+RUN apt-get -y install gcc g++
 
+# Dafny prerequisites
+WORKDIR /opt
+RUN apt-get update && apt-get install -y apt-transport-https && apt-get update && apt-get install -y dotnet-sdk-6.0
+
+# Java (at least for TLA+)
+RUN apt -y install default-jre default-jdk
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.profile
+
+# TLA+
+# WORKDIR /opt 
+# RUN wget -q https://github.com/tlaplus/tlaplus/releases/download/v1.7.1/TLAToolbox-1.7.1-linux.gtk.amd64.deb && apt -y install ./TLAToolbox-1.7.1-linux.gtk.amd64.deb && rm ./TLAToolbox-1.7.1-linux.gtk.amd64.deb
+# RUN echo "export PATH=$PATH:/opt/TLA+Toolbox" >> ~/.profile
